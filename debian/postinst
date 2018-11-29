@@ -1,0 +1,43 @@
+#!/bin/sh
+
+set -e
+
+echo "/etc/nsswitch.conf dosyasına ldap ekleniyor"
+sed -i 's/passwd:         compat/passwd:         compat ldap/g' /etc/nsswitch.conf
+sed -i 's/group:          compat/group:          compat ldap/g' /etc/nsswitch.conf
+sed -i 's/shadow:         compat/shadow:         compat ldap/g' /etc/nsswitch.conf
+
+#libpam-script ve ldap ayarları yedeklenir
+echo "libpam-script ve ldap ayarları yedekleniyor"
+if [ -f /usr/share/pam_configs/pam_script ]; then
+
+	cp -fr /usr/share/pam-configs/pam_script /usr/share/ahenk/pam_scripts_original/
+	cp -fr /usr/share/ahenk/ahenkldap/pam_ldap/pam_script  /usr/share/pam-configs/
+else
+
+	cp -fr /usr/share/ahenk/ahenkldap/pam_ldap/pam_script  /usr/share/pam-configs/
+
+fi
+
+if [ -f /usr/share/pam_configs/ldap ]; then
+
+        cp -fr /usr/share/pam-configs/ldap /usr/share/ahenk/pam_scripts_original/
+        cp -fr /usr/share/ahenk/ahenkldap/pam_ldap/ldap  /usr/share/pam-configs/
+else
+
+        cp -fr /usr/share/ahenk/ahenkldap/pam_ldap/ldap  /usr/share/pam-configs/
+
+fi
+
+#ahenkldap paketi ile gelen pam-script ve ldap ayarları sisteme eklenir
+#echo "Paketi ile gelen pam-script ve ldap ayarları sisteme ekleniyor"
+#cp -fr /usr/share/pam-configs/ldap /usr/share/ahenk/pam_scripts_original/
+#cp -fr /usr/share/ahenk/ahenkldap/pam_ldap/ldap  /usr/share/pam-configs/
+
+#Pam ayarları sisteme uygulanır
+echo "Pam ayarları sisteme uygulanıyor"
+DEBIAN_FRONTEND=noninteractive pam-auth-update --package
+
+
+
+

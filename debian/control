@@ -1,0 +1,14 @@
+Source: pardus-ldap-client-settings
+Section: utils
+Priority: optional
+Build-Depends: debhelper (>= 9)
+Maintainer: Ömer Çakmak <farukomercakmak@gmail.com>
+
+Package: pardus-ldap-client-settings
+Depends: nscd,
+	 libpam-ldap,
+	 libnss-ldap,
+	 usermode
+Architecture: all
+Description: Ldap user login setting package
+	Ldap kullanici giris ayarlari
