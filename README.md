@@ -71,4 +71,3 @@ Uçbirimde;
 	lider-client
 
 komutu ile herhangi bir dizin altından erişilebilir.
-# distro-tracker
